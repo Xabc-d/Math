@@ -1,0 +1,32 @@
+1. Given two sets A={1,2} B={x,y}, list all possible functions from set A to set B.
+solution:
+
+f1: 1→x, 2→x
+f2: 1→x, 2→y
+f3: 1→y, 2→x
+f4: 1→y, 2→y
+
+limit random     more question
+input A{} B{}
+Show
+limit max number of sets
+Can not be empty
+
+2.injective surjective bijective
+For the following function, determine whether they are injective, surjective, or both(bijective)
+more
+prove
+
+3.inverse
+if bijective then inverse function
+find
+
+4. image and preimage
+Consider the function 𝑓:{0, 1, … ,9} → {0, 1, … ,10} f(x) = 3x+1
+random f....
+What is the image of 𝑓?
+What is the preimage of the letter ‘s’ under 7?
+if bijective then inverse function
+
+5.composition
+give some composition

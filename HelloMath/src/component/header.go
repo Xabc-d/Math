@@ -16,6 +16,8 @@ func (h *Header) Render() app.UI {
 				app.Text("HelloMath"),
 			),
 		),
+		&MathJaxConfig{},
+		//app.P().Text("\\(\\frac{a}{b}\\)"),
 		app.Div().Style("height", "30vh").Body(
 			app.H6().
 				Style("margin-top", "10vh").
@@ -312,56 +314,6 @@ func (h *Header) Render() app.UI {
 							Style("bottom", "0").
 							Text("All"),
 					),
-				//app.A().
-				//	Href("week0122").
-				//	Class("clickable-square").
-				//	Style("width", "20vh").
-				//	Style("height", "20vh").
-				//	Style("position", "relative").
-				//	Style("background-color", "#add8e6").
-				//	Style("display", "flex").
-				//	Style("justify-content", "center").
-				//	Style("align-items", "center").
-				//	Style("margin", "3vh").
-				//	Body(
-				//		app.Img().
-				//			Src("/web/func.svg").
-				//			Style("width", "15vh").
-				//			Style("height", "15vh").
-				//			Style("position", "absolute").
-				//			Style("top", "0").
-				//			Alt("Embedded clickable image"),
-				//		app.H5().
-				//			Style("color", "black").
-				//			Style("position", "absolute").
-				//			Style("bottom", "0").
-				//			Text("Function"),
-				//	),
-				//app.A().
-				//	Href("week0122").
-				//	Class("clickable-square").
-				//	Style("width", "20vh").
-				//	Style("height", "20vh").
-				//	Style("position", "relative").
-				//	Style("background-color", "#add8e6").
-				//	Style("display", "flex").
-				//	Style("justify-content", "center").
-				//	Style("align-items", "center").
-				//	Style("margin", "3vh").
-				//	Body(
-				//		app.Img().
-				//			Src("/web/func.svg").
-				//			Style("width", "15vh").
-				//			Style("height", "15vh").
-				//			Style("position", "absolute").
-				//			Style("top", "0").
-				//			Alt("Embedded clickable image"),
-				//		app.H5().
-				//			Style("color", "black").
-				//			Style("position", "absolute").
-				//			Style("bottom", "0").
-				//			Text("Function"),
-				//	),
 			),
 	)
 }

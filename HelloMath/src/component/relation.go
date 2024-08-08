@@ -3,505 +3,19 @@ package component
 import (
 	"fmt"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"math/rand"
 	"sort"
-	"strconv"
-	"time"
 )
 
 type Relation struct {
-	app.Compo
-	rand          *rand.Rand
-	inputValue    string
-	seed          int64
-	Q1input       string
-	Q2input       string
-	Q3input       string
-	Q4input       string
-	Q5input       string
-	Q6input       string
-	Q1option      string
-	Q2option      string
-	Q3option      string
-	Q4option      string
-	Q5option      string
-	question1     Question
-	question2     Question
-	question3     Question
-	question4     Question
-	question5     Question
-	question6     Question
-	questionType  int
-	theLevel      int64
-	seedClicked   bool
-	answerClicked bool
-	currentValue  string
+	Bases
 }
 
-func (r *Relation) Render() app.UI {
-	return app.Div().Class("container-fluid").Style("background-color", "#F0F8FF").Style("min-height", "100vh").Body(
-		app.Div().Class("row bg-primary").Style("min-height", "50px").Body(),
-		app.Div().Class("row").Style("background-color", "#add8e6").Body(
-			app.H1().Style("width", "90%").Style("margin", "0 auto").Body(
-				app.Text("HelloMath"),
-			),
-		),
-
-		app.Div().Class("row").Body(
-			app.Div().Class("col-2").Body(&Sidebar{}),
-			app.Div().Class("col-10").Body(
-				app.Div().Style("height", "8vh").Body(
-					app.H6().
-						Style("margin-top", "4vh").
-						//Style("text-align", "center").
-						Text("Instructions HelloMath!"),
-				),
-				app.Div().Body(
-					app.Input().
-						ID("seedInput").
-						Type("text").
-						Value(r.inputValue).
-						OnChange(r.OnInputChange),
-					app.Button().
-						Text("Generate Seed").
-						OnClick(r.GenerateSeed),
-					app.Button().
-						Text("up").
-						OnClick(r.upLevel),
-
-					app.Button().
-						Text("down").
-						OnClick(r.downLevel),
-				),
-
-				app.H6().Text("Seed Value: "+r.currentValue),
-				app.Div().Style("height", "3vh").Body(),
-				app.If(r.seedClicked,
-					//question 1
-					///////////
-					app.If(r.question1.questionType == 1,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q1 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question1.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Input().
-									ID("Q1input").
-									Type("text").
-									Value(r.Q1input).
-									Style("width", "400px").
-									Style("height", "30px").
-									Style("margin-left", "50px").
-									Class("form-control mb-3").
-									Placeholder("").
-									AutoFocus(true),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q1input == r.question1.answer,
-									//app.If(se.question1.answer == se.Q1input,
-									app.Div().Class("col").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question1.answer).Style("font-size", "18px").Style("margin-left", "50px"),
-						),
-					),
-					app.If(r.question1.questionType == 2,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q1 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question1.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Div().Class("form-check").Style("margin-left", "50px").Body(
-									app.Input().
-										Type("radio").
-										Name("options1").
-										Class("form-check-input").
-										Value("Option A").
-										ID("Q1option-a"),
-									app.Label().Class("form-check-label").Text("True"),
-								),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q1option == r.question1.answer,
-									app.Div().Class("col-auto").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.Div().Class("form-check").Style("margin-left", "50px").Body(
-							app.Input().
-								Type("radio").
-								Name("options1").
-								Class("form-check-input").
-								Value("Option B").
-								ID("Q1option-b"),
-							app.Label().Class("form-check-label").For("option-b").Text("False"),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question1.answer).Style("font-size", "17px").Style("margin-left", "50px"),
-						),
-					),
-					////question 2
-					app.If(r.question2.questionType == 1,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q2 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question2.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Input().
-									ID("Q2input").
-									Type("text").
-									Value(r.Q2input).
-									Style("width", "400px").
-									Style("height", "30px").
-									Style("margin-left", "50px").
-									Class("form-control mb-3").
-									Placeholder("").
-									AutoFocus(true),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q2input == r.question2.answer,
-									app.Div().Class("col").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question2.answer).Style("font-size", "18px").Style("margin-left", "50px"),
-						),
-					),
-					app.If(r.question2.questionType == 2,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q2 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question2.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Div().Class("form-check").Style("margin-left", "50px").Body(
-									app.Input().
-										Type("radio").
-										Name("options2").
-										Class("form-check-input").
-										Value("Option A").
-										ID("Q2option-a"),
-									app.Label().Class("form-check-label").Text("True"),
-								),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q2option == r.question2.answer,
-									app.Div().Class("col-auto").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.Div().Class("form-check").Style("margin-left", "50px").Body(
-							app.Input().
-								Type("radio").
-								Name("options2").
-								Class("form-check-input").
-								Value("Option B").
-								ID("Q2option-b"),
-							app.Label().Class("form-check-label").For("option-b").Text("False"),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question2.answer).Style("font-size", "17px").Style("margin-left", "50px"),
-						),
-					),
-					///////3
-					app.If(r.question3.questionType == 1,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q3 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question3.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Input().
-									ID("Q3input").
-									Type("text").
-									Value(r.Q3input).
-									Style("width", "400px").
-									Style("height", "30px").
-									Style("margin-left", "50px").
-									Class("form-control mb-3").
-									Placeholder("").
-									AutoFocus(true),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q3input == r.question3.answer,
-									//app.If(se.question1.answer == se.Q1input,
-									app.Div().Class("col").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question3.answer).Style("font-size", "18px").Style("margin-left", "50px"),
-						),
-					),
-					app.If(r.question3.questionType == 2,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q3 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question3.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Div().Class("form-check").Style("margin-left", "50px").Body(
-									app.Input().
-										Type("radio").
-										Name("options3").
-										Class("form-check-input").
-										Value("Option A").
-										ID("Q3option-a"),
-									app.Label().Class("form-check-label").Text("True"),
-								),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q3option == r.question3.answer,
-									app.Div().Class("col-auto").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.Div().Class("form-check").Style("margin-left", "50px").Body(
-							app.Input().
-								Type("radio").
-								Name("options3").
-								Class("form-check-input").
-								Value("Option B").
-								ID("Q3option-b"),
-							app.Label().Class("form-check-label").For("option-b").Text("False"),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question3.answer).Style("font-size", "17px").Style("margin-left", "50px"),
-						),
-					),
-					//////4
-					app.If(r.question4.questionType == 1,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q4 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question4.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Input().
-									ID("Q4input").
-									Type("text").
-									Value(r.Q4input).
-									Style("width", "400px").
-									Style("height", "30px").
-									Style("margin-left", "50px").
-									Class("form-control mb-3").
-									Placeholder("").
-									AutoFocus(true),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q4input == r.question4.answer,
-									app.Div().Class("col").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question4.answer).Style("font-size", "18px").Style("margin-left", "50px"),
-						),
-					),
-					app.If(r.question4.questionType == 2,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q4 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question4.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Div().Class("form-check").Style("margin-left", "50px").Body(
-									app.Input().
-										Type("radio").
-										Name("options4").
-										Class("form-check-input").
-										Value("Option A").
-										ID("Q4option-a"),
-									app.Label().Class("form-check-label").Text("True"),
-								),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q4option == r.question4.answer,
-									app.Div().Class("col-auto").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.Div().Class("form-check").Style("margin-left", "50px").Body(
-							app.Input().
-								Type("radio").
-								Name("options4").
-								Class("form-check-input").
-								Value("Option B").
-								ID("Q4option-b"),
-							app.Label().Class("form-check-label").For("option-b").Text("False"),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question4.answer).Style("font-size", "17px").Style("margin-left", "50px"),
-						),
-					),
-					///////5
-					app.If(r.question5.questionType == 1,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q5 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question5.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Input().
-									ID("Q5input").
-									Type("text").
-									Value(r.Q5input).
-									Style("width", "400px").
-									Style("height", "30px").
-									Style("margin-left", "50px").
-									Class("form-control mb-3").
-									Placeholder("").
-									AutoFocus(true),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q5input == r.question5.answer,
-									//app.If(se.question1.answer == se.Q1input,
-									app.Div().Class("col").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question5.answer).Style("font-size", "18px").Style("margin-left", "50px"),
-						),
-					),
-					app.If(r.question5.questionType == 2,
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.H6().Text("Q5 :"),
-							),
-							app.Div().Class("col").Body(
-								app.P().Text(r.question5.statement1),
-							),
-						),
-						app.Div().Class("row").Body(
-							app.Div().Class("col-auto").Body(
-								app.Div().Class("form-check").Style("margin-left", "50px").Body(
-									app.Input().
-										Type("radio").
-										Name("options5").
-										Class("form-check-input").
-										Value("Option A").
-										ID("Q5option-a"),
-									app.Label().Class("form-check-label").Text("True"),
-								),
-							),
-							app.If(r.answerClicked,
-								app.If(r.Q5option == r.question5.answer,
-									app.Div().Class("col-auto").Body(
-										app.Img().Src("/web/greencheck.svg").Class("img-fluid").Alt("check").Style("width", "30px").Style("height", "30px"),
-									),
-								),
-							),
-						),
-						app.Div().Class("form-check").Style("margin-left", "50px").Body(
-							app.Input().
-								Type("radio").
-								Name("options5").
-								Class("form-check-input").
-								Value("Option B").
-								ID("Q5option-b"),
-							app.Label().Class("form-check-label").For("option-b").Text("False"),
-						),
-						app.If(r.answerClicked,
-							app.P().Text("Answer: "+r.question5.answer).Style("font-size", "17px").Style("margin-left", "50px"),
-						),
-					),
-
-					app.Button().
-						Text("Finish").
-						Style("margin-left", "50px").
-						OnClick(r.finishClicked),
-				),
-			),
-		),
-	)
+func (r *Relation) OnMount(ctx app.Context) {
+	r.Bases.QuestionSetter = r
 }
 
-func (r *Relation) OnInputChange(ctx app.Context, e app.Event) {
-	r.inputValue = ctx.JSSrc().Get("value").String()
-	r.Update()
-}
+func (r *Relation) SetQuestion() {
 
-func (r *Relation) GenerateSeed(ctx app.Context, e app.Event) {
-	inputValue := app.Window().GetElementByID("seedInput").Get("value").String()
-	fmt.Println("input value:", inputValue)
-	seed, err := strconv.ParseInt(inputValue, 10, 64)
-	r.seed = seed
-	if err != nil {
-		fmt.Println("No input or error converting string to integer:", err)
-		seconds := time.Now().UnixNano() / 1000000
-		r.seed = (seconds % 9000) + 1000
-		//seed = time.Now().UnixNano()/1000000 - 1713220000000
-		//one day 86400 seconds
-		r.currentValue = strconv.FormatInt(r.seed, 10) + " (No input or error input use random seed)"
-
-	} else {
-		r.currentValue = strconv.FormatInt(r.seed, 10)
-	}
-
-	r.answerClicked = false
-	source := rand.NewSource(r.seed)
-	r.rand = rand.New(source)
 	group1 := []func() Question{
 		r.createRelation,
 		r.inverse,
@@ -540,177 +54,6 @@ func (r *Relation) GenerateSeed(ctx app.Context, e app.Event) {
 
 	}
 
-	r.seedClicked = true
-	r.Update()
-}
-
-func (r *Relation) upLevel(ctx app.Context, e app.Event) {
-	if r.seed%10 == 9 {
-		r.seed = r.seed + 10
-	} else {
-		r.seed++
-	}
-
-	r.currentValue = strconv.FormatInt(r.seed, 10)
-	r.inputValue = strconv.FormatInt(r.seed, 10)
-
-	r.answerClicked = false
-	source := rand.NewSource(r.seed)
-	r.rand = rand.New(source)
-	group1 := []func() Question{
-		r.createRelation,
-		r.inverse,
-		r.inverseAlp,
-		r.inverseFix,
-		r.reflexiveSingle,
-		r.antisymmetricSingle,
-		r.transitiveSingle,
-		r.symmetricSingle,
-	}
-	group2 := []func() Question{
-		r.composition,
-		r.partialOrder,
-	}
-	r.rand.Shuffle(len(group1), func(i, j int) {
-		group1[i], group1[j] = group1[j], group1[i]
-	})
-	r.rand.Shuffle(len(group2), func(i, j int) {
-		group2[i], group2[j] = group2[j], group2[i]
-	})
-
-	r.theLevel = r.seed % 10
-	if r.theLevel >= 0 && r.theLevel < 5 {
-		r.question1 = group1[0]()
-		r.question2 = group1[1]()
-		r.question3 = group1[2]()
-		r.question4 = group1[3]()
-		r.question5 = group1[4]()
-
-	} else {
-		r.question1 = group1[0]()
-		r.question2 = group1[1]()
-		r.question3 = group1[2]()
-		r.question4 = group2[0]()
-		r.question5 = group2[1]()
-
-	}
-
-	r.seedClicked = true
-
-	r.Update()
-}
-func (r *Relation) downLevel(ctx app.Context, e app.Event) {
-	if r.seed%10 == 0 {
-		r.seed = r.seed - 10
-	} else {
-		r.seed--
-	}
-	r.currentValue = strconv.FormatInt(r.seed, 10)
-	r.inputValue = strconv.FormatInt(r.seed, 10)
-
-	r.answerClicked = false
-	source := rand.NewSource(r.seed)
-	r.rand = rand.New(source)
-	group1 := []func() Question{
-		r.createRelation,
-		r.inverse,
-		r.inverseAlp,
-		r.inverseFix,
-		r.reflexiveSingle,
-		r.antisymmetricSingle,
-		r.transitiveSingle,
-		r.symmetricSingle,
-	}
-	group2 := []func() Question{
-		r.composition,
-		r.partialOrder,
-	}
-	r.rand.Shuffle(len(group1), func(i, j int) {
-		group1[i], group1[j] = group1[j], group1[i]
-	})
-	r.rand.Shuffle(len(group2), func(i, j int) {
-		group2[i], group2[j] = group2[j], group2[i]
-	})
-
-	r.theLevel = r.seed % 10
-	if r.theLevel >= 0 && r.theLevel < 5 {
-		r.question1 = group1[0]()
-		r.question2 = group1[1]()
-		r.question3 = group1[2]()
-		r.question4 = group1[3]()
-		r.question5 = group1[4]()
-
-	} else {
-		r.question1 = group1[0]()
-		r.question2 = group1[1]()
-		r.question3 = group1[2]()
-		r.question4 = group2[0]()
-		r.question5 = group2[1]()
-
-	}
-
-	r.seedClicked = true
-	r.Update()
-}
-
-func (r *Relation) finishClicked(ctx app.Context, e app.Event) {
-	r.answerClicked = true
-	//q1
-	if r.question1.questionType == 1 {
-		r.Q1input = app.Window().GetElementByID("Q1input").Get("value").String()
-	}
-	if r.question1.questionType == 2 {
-		if app.Window().GetElementByID("Q1option-a").Get("checked").Bool() {
-			r.Q1option = "true"
-		} else if app.Window().GetElementByID("Q1option-b").Get("checked").Bool() {
-			r.Q1option = "false"
-		}
-	}
-	//q2
-	if r.question2.questionType == 1 {
-		r.Q2input = app.Window().GetElementByID("Q2input").Get("value").String()
-	}
-	if r.question2.questionType == 2 {
-		if app.Window().GetElementByID("Q2option-a").Get("checked").Bool() {
-			r.Q2option = "true"
-		} else if app.Window().GetElementByID("Q2option-b").Get("checked").Bool() {
-			r.Q2option = "false"
-		}
-	}
-	//q3
-	if r.question3.questionType == 1 {
-		r.Q3input = app.Window().GetElementByID("Q3input").Get("value").String()
-	}
-	if r.question3.questionType == 2 {
-		if app.Window().GetElementByID("Q3option-a").Get("checked").Bool() {
-			r.Q3option = "true"
-		} else if app.Window().GetElementByID("Q3option-b").Get("checked").Bool() {
-			r.Q3option = "false"
-		}
-	}
-	//q4
-	if r.question4.questionType == 1 {
-		r.Q4input = app.Window().GetElementByID("Q4input").Get("value").String()
-	}
-	if r.question4.questionType == 2 {
-		if app.Window().GetElementByID("Q4option-a").Get("checked").Bool() {
-			r.Q4option = "true"
-		} else if app.Window().GetElementByID("Q4option-b").Get("checked").Bool() {
-			r.Q4option = "false"
-		}
-	}
-	//q5
-	if r.question5.questionType == 1 {
-		r.Q5input = app.Window().GetElementByID("Q5input").Get("value").String()
-	}
-	if r.question5.questionType == 2 {
-		if app.Window().GetElementByID("Q5option-a").Get("checked").Bool() {
-			r.Q5option = "true"
-		} else if app.Window().GetElementByID("Q5option-b").Get("checked").Bool() {
-			r.Q5option = "false"
-		}
-	}
-	r.Update()
 }
 
 // 1
@@ -838,6 +181,7 @@ func (r *Relation) createRelation() Question {
 		thisRelation: R,
 		statement1:   statement,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -944,6 +288,7 @@ func (r *Relation) inverse() Question {
 		thisRelation: R,
 		statement1:   statement,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -971,6 +316,7 @@ func (r *Relation) inverseAlp() Question {
 		statement1:   statement,
 		answer:       relationAlpOutput(RInverse),
 		questionType: 1,
+		parseType:    1,
 	}
 
 }
@@ -1000,6 +346,7 @@ func (r *Relation) inverseFix() Question {
 		statement1:   statement,
 		answer:       answer,
 		questionType: 1,
+		parseType:    1,
 	}
 }
 
@@ -1032,6 +379,7 @@ func (r *Relation) composition() Question {
 		answer:       theSolution,
 		statement1:   statement,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -1052,6 +400,7 @@ func (r *Relation) reflexiveSingle() Question {
 		statement1:   statement,
 		answer:       outPutR,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -1087,11 +436,16 @@ func (r *Relation) antisymmetricSingle() Question {
 	outPutR := relationOutput(R)
 	theAnswer := fmt.Sprintf("Remove %v or %v", relationOutput(R1), relationOutput(R2))
 	theSetOutput := setOutput(theSet)
-	statement := fmt.Sprintf("Suppose set A = %v and relation R = %v. To ensure R is antisymmetric, which pair should be removed? Please respond like this: Remove {(-5, -12)} or {(-12, -5)}", theSetOutput, outPutR)
+	statement := fmt.Sprintf(
+		"Suppose set A = %v and relation R = %v. To ensure R is antisymmetric, which pair should be removed? Please respond like this: Remove {(-5, -12)} or {(-12, -5)}",
+		theSetOutput,
+		outPutR,
+	)
 	return Question{
 		statement1:   statement,
 		answer:       theAnswer,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -1122,6 +476,7 @@ func (r *Relation) transitiveSingle() Question {
 		statement1:   statement,
 		answer:       outPutR,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -1148,6 +503,7 @@ func (r *Relation) symmetricSingle() Question {
 		statement1:   statement,
 		answer:       outPutR,
 		questionType: 1,
+		parseType:    3,
 	}
 }
 
@@ -1213,6 +569,7 @@ func (r *Relation) partialOrder() Question {
 		statement1:   statement,
 		answer:       theAnser,
 		questionType: 2,
+		parseType:    3,
 	}
 }
 

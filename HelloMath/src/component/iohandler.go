@@ -13,6 +13,7 @@ type Question struct {
 	solution     string
 	answer       string
 	questionType int
+	parseType    int
 	level        int
 }
 
